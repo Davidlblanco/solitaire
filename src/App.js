@@ -12,20 +12,9 @@ function App() {
   ]
   const [shuffle, setShuffle] = useState([]);
 
-  const [closed1, setClosed1] = useState([]);
-  const [closed2, setClosed2] = useState([]);
-  const [closed3, setClosed3] = useState([]);
-  const [closed4, setClosed4] = useState([]);
-  const [closed5, setClosed5] = useState([]);
-  const [closed6, setClosed6] = useState([]);
+  const [closed, setClosed] = useState({});
 
-  const [opened1, setOpened1] = useState([]);
-  const [opened2, setOpened2] = useState([]);
-  const [opened3, setOpened3] = useState([]);
-  const [opened4, setOpened4] = useState([]);
-  const [opened5, setOpened5] = useState([]);
-  const [opened6, setOpened6] = useState([]);
-  const [opened7, setOpened7] = useState([]);
+  const [opened, setOpened] = useState({});
 
   const [hand, setHand] = useState([]);
 
@@ -35,7 +24,7 @@ function App() {
   // const [final4, setFinal4] = useState([]);
 
   useEffect(() => {
-    shuffleFunc()
+    shuffleFunc();
   }, [])
 
   function shuffleFunc() {
@@ -51,55 +40,94 @@ function App() {
       deck[randomIndex] = temporaryValue;
     }
     setShuffle(deck);
-
-    setClosed1(deck.slice(0, 6));
-    setClosed2(deck.slice(8, 13));
-    setClosed3(deck.slice(15, 19));
-    setClosed4(deck.slice(21, 24));
-    setClosed5(deck.slice(26, 28));
-    setClosed6(deck.slice(30, 31));
-    // setClosed7(deck.slice(32, 33));
-
-    setOpened1(deck.slice(6, 7));
-    setOpened2(deck.slice(13, 14));
-    setOpened3(deck.slice(19, 20));
-    setOpened4(deck.slice(24, 25));
-    setOpened5(deck.slice(28, 29));
-    setOpened6(deck.slice(31, 32));
-    setOpened7(deck.slice(32, 33));
-
+    setClosed({
+      '1': deck.slice(0, 6),
+      '2': deck.slice(8, 13),
+      '3': deck.slice(15, 19),
+      '4': deck.slice(21, 24),
+      '5': deck.slice(26, 28),
+      '6': deck.slice(30, 31),
+    })
+    setOpened({
+      '1': deck.slice(6, 7),
+      '2': deck.slice(13, 14),
+      '3': deck.slice(19, 20),
+      '4': deck.slice(24, 25),
+      '5': deck.slice(28, 29),
+      '6': deck.slice(31, 32),
+      '7': deck.slice(32, 33)
+    }
+    )
 
     setHand(deck.slice(33, 52));
   }
 
 
-  console.log(shuffle)
-  console.log(hand)
-  // console.log('1', opened1)
-  // console.log(closed2)
-  // console.log(closed3)
-  // console.log(closed4)
-  // console.log(closed5)
-  // console.log(closed6)
-  // console.log(closed7)
-  // console.log(opened)
+  const [cardMove, setCardMove] = useState('')
+  const [colDrop, setColDrop] = useState('')
 
-  function handleColMove(a, b) {
-    console.log(a, b)
+  function handleColMove({ card, col }) {
+    if (card) {
+      setCardMove(card)
+    }
+    if (col) {
+      setColDrop(col)
+    }
   }
 
+  useEffect(() => {
+    if (cardMove !== colDrop && colDrop.length > 0) {
+      // console.log('cardMove', cardMove)
+      // console.log('colDrop', colDrop)
+      // col-3_card-10-3
+      // col-4_card-5-4
+      // const finalcol, initCard, finalCard;
+      const initCol = cardMove.substring(4, 5)
+      const finalcol = colDrop.substring(4, 5)
+
+      console.log(opened[initCol], opened[finalcol])
+      const lastItem = opened[finalcol][opened[finalcol].length - 1];
+      console.log(parseInt(lastItem.split('-')[1]))
+      console.log(parseInt(cardMove.split('-')[3]))
+
+      //if figures have different color
+      if (
+        parseInt(lastItem.split('-')[1]) % 2 == 0 && !(parseInt(cardMove.split('-')[3]) % 2 == 0) ||
+        !(parseInt(lastItem.split('-')[1]) % 2 == 0) && parseInt(cardMove.split('-')[3]) % 2 == 0
+      ) {
+
+        let losingCol = [];
+        const indexOfCard = (opened[initCol]).indexOf(cardMove.split('card-')[1]);
+        let gainingCol = [...opened[finalcol]];
+        opened[initCol].forEach((item, index) => {
+          if (index < indexOfCard) {
+            losingCol.push(item)
+          }
+          else {
+            gainingCol = [...gainingCol, item]
+          }
+        })
+
+        setOpened({ ...opened, [initCol]: losingCol, [finalcol]: gainingCol })
+      }
+
+      setCardMove('')
+      setColDrop('')
+
+    }
+  }, [cardMove, colDrop])
   return (
     <div className="App">
       solitaire
       <button onClick={() => shuffleFunc()}>Shuffle</button>
       <div className='gameContainer' >
-        <Col id={1} closed={closed1} opened={opened1} handleColMove={handleColMove}></Col>
-        <Col id={2} closed={closed2} opened={opened2} handleColMove={handleColMove}></Col>
-        <Col id={3} closed={closed3} opened={opened3} handleColMove={handleColMove}></Col>
-        <Col id={4} closed={closed4} opened={opened4} handleColMove={handleColMove}></Col>
-        <Col id={5} closed={closed5} opened={opened5} handleColMove={handleColMove}></Col>
-        <Col id={6} closed={closed6} opened={opened6} handleColMove={handleColMove}></Col>
-        <Col id={7} opened={opened7}></Col>
+        <Col id={1} opened={opened[1]} handleColMove={handleColMove} closed={closed[1]}></Col>
+        <Col id={2} opened={opened[2]} handleColMove={handleColMove} closed={closed[2]}></Col>
+        <Col id={3} opened={opened[3]} handleColMove={handleColMove} closed={closed[3]}></Col>
+        <Col id={4} opened={opened[4]} handleColMove={handleColMove} closed={closed[4]}></Col>
+        <Col id={5} opened={opened[5]} handleColMove={handleColMove} closed={closed[5]}></Col>
+        <Col id={6} opened={opened[6]} handleColMove={handleColMove} closed={closed[6]}></Col>
+        <Col id={7} opened={opened[7]} handleColMove={handleColMove}></Col>
       </div>
       <Hand hand={hand} />
     </div >

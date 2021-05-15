@@ -1,40 +1,23 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 function Card({ cardValue, hidden, parentId, cardDragged }) {
 
-    const [leave, setLeave] = useState(-1)
-    const [land, setLand] = useState(-1)
-
-    function handleLeave(e) {
-        setLeave(e.target.id)
-        if (land > -1) {
-            console.log('leave')
-            cardDragged(leave, land)
-        }
+    function drag(ev) {
+        cardDragged(ev.target.childNodes[0].id)
     }
-    function handleLand(val) {
-        setLand(parentId)
-        if (land > -1) {
-            console.log('land')
-            cardDragged(leave, land)
-        }
-
+    const figure = {
+        4: '♣️',
+        3: '♦️',
+        2: '♠️',
+        1: '♥️'
     }
-
-
-
     return (
-        <div style={{ border: '1px solid' }} draggable='false'>
+        <div style={{ border: '1px solid' }} draggable={!hidden} onDragStart={drag}>
             {
                 hidden ?
                     <div>{cardValue + ' hidden'}</div>
                     :
-                    <div
-                        onDragStart={handleLeave}
-                        draggable={!hidden}
-                        id={`${parentId}-card-${cardValue}`}
-                        onDragLeave={({ target }) => handleLand(target.id)}
-                    >{cardValue}</div>
+                    <div id={`col-${parentId}_card-${cardValue}`}>{cardValue}<span>{figure[cardValue.substring(2)]}</span></div>
             }
         </div>
     )

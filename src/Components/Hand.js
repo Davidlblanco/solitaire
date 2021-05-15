@@ -20,11 +20,12 @@ function Hand({ hand }) {
             <button onClick={handleClick} >giveCard</button>
             <div className='cardBox'>
                 {hand.map((item, index) => {
-                    if (index <= counter) {
-                        return (
-                            <Card key={index} cardValue={item} />
-                        )
-                    }
+
+                    return (index <= counter &&
+                        <Card key={index} cardValue={item} />
+                    )
+
+
                 })}
             </div>
         </div >
