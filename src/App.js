@@ -29,10 +29,10 @@ function App() {
 
   const [hand, setHand] = useState([]);
 
-  const [final1, setFinal1] = useState([]);
-  const [final2, setFinal2] = useState([]);
-  const [final3, setFinal3] = useState([]);
-  const [final4, setFinal4] = useState([]);
+  // const [final1, setFinal1] = useState([]);
+  // const [final2, setFinal2] = useState([]);
+  // const [final3, setFinal3] = useState([]);
+  // const [final4, setFinal4] = useState([]);
 
   useEffect(() => {
     shuffleFunc()
@@ -84,18 +84,22 @@ function App() {
   // console.log(closed7)
   // console.log(opened)
 
+  function handleColMove(a, b) {
+    console.log(a, b)
+  }
+
   return (
     <div className="App">
       solitaire
       <button onClick={() => shuffleFunc()}>Shuffle</button>
       <div className='gameContainer' >
-        <Col closed={closed1} opened={opened1}></Col>
-        <Col closed={closed2} opened={opened2}></Col>
-        <Col closed={closed3} opened={opened3}></Col>
-        <Col closed={closed4} opened={opened4}></Col>
-        <Col closed={closed5} opened={opened5}></Col>
-        <Col closed={closed6} opened={opened6}></Col>
-        <Col opened={opened7}></Col>
+        <Col id={1} closed={closed1} opened={opened1} handleColMove={handleColMove}></Col>
+        <Col id={2} closed={closed2} opened={opened2} handleColMove={handleColMove}></Col>
+        <Col id={3} closed={closed3} opened={opened3} handleColMove={handleColMove}></Col>
+        <Col id={4} closed={closed4} opened={opened4} handleColMove={handleColMove}></Col>
+        <Col id={5} closed={closed5} opened={opened5} handleColMove={handleColMove}></Col>
+        <Col id={6} closed={closed6} opened={opened6} handleColMove={handleColMove}></Col>
+        <Col id={7} opened={opened7}></Col>
       </div>
       <Hand hand={hand} />
     </div >
