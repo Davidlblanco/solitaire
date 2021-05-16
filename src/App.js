@@ -75,23 +75,13 @@ function App() {
     }
   }
 
+  //column change
   useEffect(() => {
     if (cardMove !== colDrop && colDrop.length > 0) {
-      // console.log('cardMove', cardMove)
-      // console.log('colDrop', colDrop)
-      // col-3_card-10-3
-      // col-4_card-5-4
-      // const finalcol, initCard, finalCard;
       const initCol = cardMove.substring(4, 5)
       const finalcol = colDrop.substring(4, 5)
-
-      // console.log(opened[initCol], opened[finalcol])
       const lastItem = opened[finalcol][opened[finalcol].length - 1];
       console.log(cardMove)
-      // console.log(parseInt(lastItem.split('-')[1]))
-      // console.log(parseInt(cardMove.split('-')[3]))
-
-      //if figures have different color and numbars are sequence
       if (
         (parseInt(lastItem.split('-')[1]) % 2 === 0 && !(parseInt(cardMove.split('-')[3]) % 2 == 0)
           ||
@@ -124,6 +114,21 @@ function App() {
 
     }
   }, [cardMove, colDrop])
+
+  //open card refill
+  useEffect(() => {
+    Object.keys(opened).forEach((item, index) => {
+      if (item < 7 && opened[item].length === 0 && closed[item].length > 0) {
+        const newClosed = closed[item].filter((itm, index) => index !== closed[item].length - 1);
+        const newOpened = closed[item].filter((itm, index) => index === closed[item].length - 1);
+        setClosed({ ...closed, [item]: newClosed })
+        setOpened({ ...opened, [item]: newOpened })
+        console.log('objitem', opened[item], closed[item], newClosed)
+
+      }
+    })
+  }, [opened])
+
   return (
     <div className="App">
       solitaire

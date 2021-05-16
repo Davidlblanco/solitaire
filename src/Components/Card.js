@@ -32,16 +32,16 @@ function Card({ cardValue, hidden, parentId, cardDragged }) {
             default:
                 break;
         }
-        return split.join('-')
+        return split[0]
     }
 
     return (
         <div style={{ border: '1px solid' }} draggable={!hidden} onDragStart={drag}>
             {
                 hidden ?
-                    <div>{formatValue(cardValue) + ' hidden'}</div>
+                    <div>{formatValue(cardValue) + ' hidden'}<span>{figure[cardValue.split('-')[1]]}</span></div>
                     :
-                    <div id={`col-${parentId}_card-${cardValue}`}>{formatValue(cardValue)}<span>{figure[cardValue.split('-')[1]]}</span></div>
+                    <div id={`col-${parentId}_card-${cardValue}`} style={{ display: 'block', height: '150px' }}>{formatValue(cardValue)}<span>{figure[cardValue.split('-')[1]]}</span></div>
             }
         </div>
     )
