@@ -5,10 +5,10 @@ import Hand from './Components/Hand';
 
 function App() {
   let deck = [
-    'A-1', '2-1', '3-1', '4-1', '5-1', '6-1', '7-1', '8-1', '9-1', '10-1', 'J-1', 'Q-1', 'K-1',
-    'A-2', '2-2', '3-2', '4-2', '5-2', '6-2', '7-2', '8-2', '9-2', '10-2', 'J-2', 'Q-2', 'K-2',
-    'A-3', '2-3', '3-3', '4-3', '5-3', '6-3', '7-3', '8-3', '9-3', '10-3', 'J-3', 'Q-3', 'K-3',
-    'A-4', '2-4', '3-4', '4-4', '5-4', '6-4', '7-4', '8-4', '9-4', '10-4', 'J-4', 'Q-4', 'K-4'
+    '1-1', '2-1', '3-1', '4-1', '5-1', '6-1', '7-1', '8-1', '9-1', '10-1', '11-1', '12-1', '13-1',
+    '1-2', '2-2', '3-2', '4-2', '5-2', '6-2', '7-2', '8-2', '9-2', '10-2', '11-2', '12-2', '13-2',
+    '1-3', '2-3', '3-3', '4-3', '5-3', '6-3', '7-3', '8-3', '9-3', '10-3', '11-3', '12-3', '13-3',
+    '1-4', '2-4', '3-4', '4-4', '5-4', '6-4', '7-4', '8-4', '9-4', '10-4', '11-4', '12-4', '13-4'
   ]
   const [shuffle, setShuffle] = useState([]);
 
@@ -85,16 +85,24 @@ function App() {
       const initCol = cardMove.substring(4, 5)
       const finalcol = colDrop.substring(4, 5)
 
-      console.log(opened[initCol], opened[finalcol])
+      // console.log(opened[initCol], opened[finalcol])
       const lastItem = opened[finalcol][opened[finalcol].length - 1];
-      console.log(parseInt(lastItem.split('-')[1]))
-      console.log(parseInt(cardMove.split('-')[3]))
+      console.log(cardMove)
+      // console.log(parseInt(lastItem.split('-')[1]))
+      // console.log(parseInt(cardMove.split('-')[3]))
 
-      //if figures have different color
+      //if figures have different color and numbars are sequence
       if (
-        parseInt(lastItem.split('-')[1]) % 2 == 0 && !(parseInt(cardMove.split('-')[3]) % 2 == 0) ||
-        !(parseInt(lastItem.split('-')[1]) % 2 == 0) && parseInt(cardMove.split('-')[3]) % 2 == 0
+        (parseInt(lastItem.split('-')[1]) % 2 === 0 && !(parseInt(cardMove.split('-')[3]) % 2 == 0)
+          ||
+          !(parseInt(lastItem.split('-')[1]) % 2 === 0) && parseInt(cardMove.split('-')[3]) % 2 == 0)
+        &&
+        parseInt(lastItem.split('-')[0]) - 1 === parseInt(cardMove.split('-')[2])
       ) {
+
+        if (finalcol[finalcol.length - 1] === parseInt(cardMove.split('-')[2]) + 1) {
+          console.log('greter by 1')
+        }
 
         let losingCol = [];
         const indexOfCard = (opened[initCol]).indexOf(cardMove.split('card-')[1]);
