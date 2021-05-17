@@ -1,0 +1,13 @@
+.cardBox{
+    width: 50%;
+    display: flex;
+    flex-wrap: nowrap;
+    .openedBox,.closedBox{
+        width: 170px;
+        height: 220px;
+        .card{
+            position: absolute;
+        }
+    }
+    
+}

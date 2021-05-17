@@ -1,7 +1,7 @@
 import React from 'react'
 import '../Sass/Card.scss'
 
-function Card({ cardValue, hidden, parentId, cardDragged }) {
+function Card({ cardValue, hidden, parentId, cardDragged, indexHand, openCut }) {
 
     function drag(ev) {
         cardDragged(ev.target.childNodes[0].id)
@@ -35,12 +35,14 @@ function Card({ cardValue, hidden, parentId, cardDragged }) {
         }
         return split[0]
     }
-
     return (
-        <div style={{ border: '1px solid' }} draggable={!hidden} onDragStart={drag}>
+        <div style={{ margin: `${indexHand}px 0 0 ${indexHand}px` }} draggable={!hidden} onDragStart={drag} className={`card ${hidden && `cut hidden`} ${openCut && `cut`}`}>
             {
                 hidden ?
-                    <div>{formatValue(cardValue) + ' hidden'}<span>{figure[cardValue.split('-')[1]]}</span></div>
+                    <div>
+                        {formatValue(cardValue) + ' hidden'}
+                        {/* <span>{figure[cardValue.split('-')[1]]}</span> */}
+                    </div>
                     :
                     <div id={`col-${parentId}_card-${cardValue}`} style={{ display: 'block', height: '150px' }}>{formatValue(cardValue)}<span>{figure[cardValue.split('-')[1]]}</span></div>
             }

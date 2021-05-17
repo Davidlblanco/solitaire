@@ -1,0 +1,18 @@
+.card{
+    width: 150px;
+    height: 200px;
+    background: #fff;
+    border:1px solid;
+    &.cut{
+        height: 30px;
+    }
+    &.hidden{
+        background: black;
+        border:1px solid grey;
+    }
+    .cardBox &{
+        &.cut{
+            height: 200px;
+        }
+    }
+}

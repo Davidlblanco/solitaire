@@ -14,20 +14,24 @@ function Hand({ hand }) {
             setCounter(- 1)
         }
     }
-    // console.log(counter)
-    // console.log(hand[counter])
+
     return (
         <div>
-            <button onClick={handleClick} >giveCard</button>
             <div className='cardBox'>
-                {hand.map((item, index) => {
-
-                    return (index <= counter &&
-                        <Card key={index} cardValue={item} />
-                    )
-
-
-                })}
+                <div onClick={handleClick} className='closedBox'>
+                    {hand.map((item, index) => {
+                        return (index >= counter &&
+                            <Card key={index} cardValue={item} hidden={true} indexHand={index - counter} />
+                        )
+                    })}
+                </div>
+                <div className='openedBox'>
+                    {hand.map((item, index) => {
+                        return (index <= counter &&
+                            <Card key={index} cardValue={item} indexHand={index} />
+                        )
+                    })}
+                </div>
             </div>
         </div >
     )
