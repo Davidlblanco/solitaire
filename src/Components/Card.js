@@ -1,7 +1,7 @@
 import React from 'react'
 import '../Sass/Card.scss'
 
-function Card({ cardValue, hidden, parentId, cardDragged, indexHand, openCut }) {
+function Card({ cardValue, hidden, parentId, cardDragged, indexHand, openCut, final, setFinal }) {
 
     function drag(ev) {
         cardDragged(ev.target.childNodes[0].id)
@@ -39,8 +39,26 @@ function Card({ cardValue, hidden, parentId, cardDragged, indexHand, openCut }) 
         }
         return split[0]
     }
+
+    function handleDoubleClick({ target }) {
+        const index = parseInt(target.id.split('-')[3] === '1' ? target.id.split('-')[3] : target.id.split('-')[3] - 1);
+        // const index = parseInt(target.id.split('-')[3] - 1);
+
+        // console.log(target.id.split('-')[3])
+        // const respectiveFinal = final[index];
+        setFinal(cardValue, parentId, target.id.split('-')[3])
+
+        // if (parseInt(target.id.split('-')[2]) - 1 === respectiveFinal.length) {
+        //     setFinal(cardValue, parentId, target.id.split('-')[3])
+        // }
+    }
+
     return (
-        <div style={{ margin: `${indexHand}px 0 0 ${indexHand}px` }} draggable={!hidden} onDragStart={parentId !== 'hand' ? drag : handDrag} className={`card ${hidden && `cut hidden`} ${openCut && `cut`} ${formatValue(cardValue) == '14' && 'invisible'}`}>
+        <div
+            style={{ margin: `${indexHand}px 0 0 ${indexHand}px` }}
+            draggable={!hidden}
+            onDragStart={parentId !== 'hand' ? drag : handDrag}
+            className={`card ${hidden && `cut hidden`} ${openCut && `cut`} ${formatValue(cardValue) == '14' && 'invisible'}`}>
             {
                 hidden ?
                     <div>
@@ -48,7 +66,13 @@ function Card({ cardValue, hidden, parentId, cardDragged, indexHand, openCut }) 
                         {/* <span>{figure[cardValue.split('-')[1]]}</span> */}
                     </div>
                     :
-                    <div id={`col-${parentId}_card-${cardValue}`} style={{ display: 'block', height: '150px' }}>{formatValue(cardValue)}<span>{figure[cardValue.split('-')[1]]}</span></div>
+                    <div
+                        onDoubleClick={handleDoubleClick}
+                        id={`col-${parentId}_card-${cardValue}`}
+                        style={{ display: 'block', height: '150px' }}>
+                        {formatValue(cardValue)}
+                        <span>{figure[cardValue.split('-')[1]]}</span>
+                    </div>
             }
         </div>
     )

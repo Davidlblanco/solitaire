@@ -2,7 +2,7 @@ import React from 'react'
 import Card from './Card'
 import '../Sass/Col.scss'
 
-function Col({ closed, opened, id, handleColMove }) {
+function Col({ closed, opened, id, handleColMove, final, setFinal }) {
 
     function handleCardDragged(cardInfo) {
         handleColMove({ card: cardInfo })
@@ -21,11 +21,11 @@ function Col({ closed, opened, id, handleColMove }) {
     return (
         <div id={id} draggable={true} onDrop={drop} onDragOver={allowDrop} className='col'>
             {closed && closed.map((item, index) => {
-                return (<Card key={index} cardValue={item} hidden={true} draggable={false} />)
+                return (<Card key={index} cardValue={item} hidden={true} draggable={false} final={final} />)
             })}
             {opened &&
                 opened.map((item, index) => {
-                    return (<Card parentId={id} key={index} id={item} cardValue={item} hidden={false} cardDragged={handleCardDragged} openCut={opened.length - 1 !== index} />)
+                    return (<Card parentId={id} key={index} id={item} cardValue={item} hidden={false} cardDragged={handleCardDragged} openCut={opened.length - 1 !== index} final={final} setFinal={setFinal} />)
                 })
             }
         </div>

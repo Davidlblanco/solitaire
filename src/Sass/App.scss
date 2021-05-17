@@ -1,13 +1,29 @@
 *{
     margin: 0;
+    box-sizing: border-box;
 }
-.gameContainer{
-    display: grid;
-grid-template-columns: repeat(7, 1fr);
-grid-template-rows: 1fr;
-grid-column-gap: 0px;
-grid-row-gap: 0px;
-}
-.d-none{
-    display:none!important;
+.App{
+    .gameContainer{
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        grid-template-rows: 1fr;
+        grid-column-gap: 0px;
+        grid-row-gap: 0px;
+    }
+    .d-none{
+        display:none!important;
+    }
+    header{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        min-height: 100px;
+    }
+    .finalcols{
+        border:1px solid;
+        display: flex;
+        justify-content: flex-end;
+        width: 302px;
+        pointer-events: none;
+    }
 }

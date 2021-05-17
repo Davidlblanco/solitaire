@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Col from './Components/Col';
 import './Sass/App.scss'
 import Hand from './Components/Hand';
+import FinalCol from './Components/FinalCol';
 
 function App() {
   let deck = [
@@ -18,10 +19,7 @@ function App() {
 
   const [hand, setHand] = useState([]);
 
-  // const [final1, setFinal1] = useState([]);
-  // const [final2, setFinal2] = useState([]);
-  // const [final3, setFinal3] = useState([]);
-  // const [final4, setFinal4] = useState([]);
+  const [final, setFinal] = useState({});
 
   useEffect(() => {
     shuffleFunc();
@@ -60,7 +58,24 @@ function App() {
     }
     )
 
+    //finalcol tester
+    // const arr1 = ['1-1'];
+    // const arr2 = ['1-2'];
+    // const arr3 = ['1-3'];
+    // const arr4 = ['1-4'];
+    // setOpened({ ...opened, '1': arr1, '2': arr2, '3': arr3, '4': arr4, })
+
+
+
+
     setHand(deck.slice(33, 52));
+    setFinal({
+
+      '1': [],
+      '2': [],
+      '3': [],
+      '4': [],
+    })
   }
 
 
@@ -75,7 +90,6 @@ function App() {
       setColDrop(col)
     }
   }
-  console.log('colDrop', colDrop.length)
 
 
   //column change
@@ -83,9 +97,8 @@ function App() {
     const finalcol = colDrop.substring(4, 5);
     if (opened[finalcol] && cardMove !== colDrop && colDrop.length > 0) {
       const initCol = cardMove.substring(4, 5)
-      console.log(colDrop)
-      let lastItem = opened[finalcol][opened[finalcol].length - 1];
-
+      // console.log(colDrop)
+      const lastItem = opened[finalcol][opened[finalcol].length - 1];
       const differentFigure =
         (parseInt(lastItem.split('-')[1]) % 2 === 0 && !(parseInt(cardMove.split('-')[3]) % 2 === 0))
         ||
@@ -140,20 +153,36 @@ function App() {
     })
   }, [opened, closed])
 
+  function handleSetFinal(card, col, fnl) {
+    // console.log(card, col, final, final[fnl])
+    const newOpened = opened[col].filter(item => item !== card);
+    const newFinal = final[fnl];
+    console.log(fnl)
+    newFinal.push(card)
+    setOpened({ ...opened, [col]: newOpened })
+    setFinal({ ...final, [fnl]: newFinal })
+  }
+
   return (
     <div className="App">
-      solitaire
-      <button onClick={() => shuffleFunc()}>Shuffle</button>
+      <header>
+        <div>solitaire
+      <button onClick={() => shuffleFunc()}>Shuffle</button></div>
+
+
+
+        <div className='finalcols'>
+          {Object.keys(final).map((item, index) => <FinalCol key={item} final={final[index + 1]} />)}
+        </div>
+      </header>
       <div className='gameContainer' >
-        <Col id={1} opened={opened[1]} handleColMove={handleColMove} closed={closed[1]}></Col>
-        <Col id={2} opened={opened[2]} handleColMove={handleColMove} closed={closed[2]}></Col>
-        <Col id={3} opened={opened[3]} handleColMove={handleColMove} closed={closed[3]}></Col>
-        <Col id={4} opened={opened[4]} handleColMove={handleColMove} closed={closed[4]}></Col>
-        <Col id={5} opened={opened[5]} handleColMove={handleColMove} closed={closed[5]}></Col>
-        <Col id={6} opened={opened[6]} handleColMove={handleColMove} closed={closed[6]}></Col>
-        <Col id={7} opened={opened[7]} handleColMove={handleColMove}></Col>
+        {Object.keys(opened).map((item, index) => {
+          return (
+            <Col key={item} id={item} opened={opened[item]} handleColMove={handleColMove} closed={closed[item]} final={final} setFinal={handleSetFinal}></Col>
+          )
+        })}
       </div>
-      <Hand hand={hand} handleHandMove={handleColMove} />
+      <Hand hand={hand} handleHandMove={handleColMove} final={final} setFinal={handleSetFinal} />
     </div >
   );
 }
