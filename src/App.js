@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Col from './Components/Col';
-import './App.css'
+import './Sass/App.scss'
 import Hand from './Components/Hand';
 
 function App() {

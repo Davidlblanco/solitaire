@@ -1,4 +1,5 @@
 import React from 'react'
+import '../Sass/Card.scss'
 
 function Card({ cardValue, hidden, parentId, cardDragged }) {
 

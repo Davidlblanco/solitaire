@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Card from './Card'
+import '../Sass/Hand.scss'
 
 function Hand({ hand }) {
     const [counter, setCounter] = useState(-1);

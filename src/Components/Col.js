@@ -1,5 +1,6 @@
 import React from 'react'
 import Card from './Card'
+import '../Sass/Col.scss'
 
 function Col({ closed, opened, id, handleColMove }) {
 
