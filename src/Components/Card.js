@@ -6,6 +6,11 @@ function Card({ cardValue, hidden, parentId, cardDragged, indexHand, openCut }) 
     function drag(ev) {
         cardDragged(ev.target.childNodes[0].id)
     }
+    function handDrag(ev) {
+        cardDragged(ev.target.childNodes[0].id)
+        // console.log('hand Drag', ev.target.childNodes[0].id)
+    }
+
     const figure = {
         1: '♥️',
         2: '♠️',
@@ -36,7 +41,7 @@ function Card({ cardValue, hidden, parentId, cardDragged, indexHand, openCut }) 
         return split[0]
     }
     return (
-        <div style={{ margin: `${indexHand}px 0 0 ${indexHand}px` }} draggable={!hidden} onDragStart={drag} className={`card ${hidden && `cut hidden`} ${openCut && `cut`}`}>
+        <div style={{ margin: `${indexHand}px 0 0 ${indexHand}px` }} draggable={!hidden} onDragStart={parentId !== 'hand' ? drag : handDrag} className={`card ${hidden && `cut hidden`} ${openCut && `cut`}`}>
             {
                 hidden ?
                     <div>

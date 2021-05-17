@@ -10,7 +10,7 @@ function App() {
     '1-3', '2-3', '3-3', '4-3', '5-3', '6-3', '7-3', '8-3', '9-3', '10-3', '11-3', '12-3', '13-3',
     '1-4', '2-4', '3-4', '4-4', '5-4', '6-4', '7-4', '8-4', '9-4', '10-4', '11-4', '12-4', '13-4'
   ]
-  const [shuffle, setShuffle] = useState([]);
+  // const [shuffle, setShuffle] = useState([]);
 
   const [closed, setClosed] = useState({});
 
@@ -39,7 +39,7 @@ function App() {
       deck[currentIndex] = deck[randomIndex];
       deck[randomIndex] = temporaryValue;
     }
-    setShuffle(deck);
+    // setShuffle(deck);
     setClosed({
       '1': deck.slice(0, 6),
       '2': deck.slice(8, 13),
@@ -75,43 +75,48 @@ function App() {
     }
   }
 
+
+
   //column change
   useEffect(() => {
+    const finalcol = colDrop.substring(4, 5)
     if (cardMove !== colDrop && colDrop.length > 0) {
       const initCol = cardMove.substring(4, 5)
-      const finalcol = colDrop.substring(4, 5)
       const lastItem = opened[finalcol][opened[finalcol].length - 1];
-      console.log(cardMove)
-      if (
-        (parseInt(lastItem.split('-')[1]) % 2 === 0 && !(parseInt(cardMove.split('-')[3]) % 2 == 0)
-          ||
-          !(parseInt(lastItem.split('-')[1]) % 2 === 0) && parseInt(cardMove.split('-')[3]) % 2 == 0)
-        &&
-        parseInt(lastItem.split('-')[0]) - 1 === parseInt(cardMove.split('-')[2])
-      ) {
 
-        if (finalcol[finalcol.length - 1] === parseInt(cardMove.split('-')[2]) + 1) {
-          console.log('greter by 1')
-        }
+      const differentFigure =
+        (parseInt(lastItem.split('-')[1]) % 2 === 0 && !(parseInt(cardMove.split('-')[3]) % 2 === 0))
+        ||
+        (!(parseInt(lastItem.split('-')[1]) % 2 === 0) && parseInt(cardMove.split('-')[3]) % 2 === 0);
 
+      const cardSequence = parseInt(lastItem.split('-')[0]) - 1 === parseInt(cardMove.split('-')[2]);
+      if (differentFigure && cardSequence) {
         let losingCol = [];
-        const indexOfCard = (opened[initCol]).indexOf(cardMove.split('card-')[1]);
+        const indexOfCard = cardMove.indexOf('hand') > -1 ? (hand).indexOf(cardMove.split('card-')[1]) : (opened[initCol]).indexOf(cardMove.split('card-')[1]);
         let gainingCol = [...opened[finalcol]];
-        opened[initCol].forEach((item, index) => {
-          if (index < indexOfCard) {
+        let col = cardMove.indexOf('hand') > -1 ? hand : opened[initCol];
+        col.forEach((item, index) => {
+          if (index < indexOfCard && col === opened[initCol]) {
+            losingCol.push(item)
+          }
+          else if (index !== indexOfCard && col === hand) {
             losingCol.push(item)
           }
           else {
             gainingCol = [...gainingCol, item]
           }
         })
+        if (col === opened[initCol]) {
+          setOpened({ ...opened, [initCol]: losingCol, [finalcol]: gainingCol })
+        }
+        else if (col === hand) {
+          setOpened({ ...opened, [finalcol]: gainingCol })
+          setHand(losingCol)
+        }
 
-        setOpened({ ...opened, [initCol]: losingCol, [finalcol]: gainingCol })
       }
-
       setCardMove('')
       setColDrop('')
-
     }
   }, [cardMove, colDrop])
 
@@ -123,11 +128,9 @@ function App() {
         const newOpened = closed[item].filter((itm, index) => index === closed[item].length - 1);
         setClosed({ ...closed, [item]: newClosed })
         setOpened({ ...opened, [item]: newOpened })
-        console.log('objitem', opened[item], closed[item], newClosed)
-
       }
     })
-  }, [opened])
+  }, [opened, closed])
 
   return (
     <div className="App">
@@ -142,7 +145,7 @@ function App() {
         <Col id={6} opened={opened[6]} handleColMove={handleColMove} closed={closed[6]}></Col>
         <Col id={7} opened={opened[7]} handleColMove={handleColMove}></Col>
       </div>
-      <Hand hand={hand} />
+      <Hand hand={hand} handleHandMove={handleColMove} />
     </div >
   );
 }
