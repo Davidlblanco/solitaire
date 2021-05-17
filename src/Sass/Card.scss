@@ -15,4 +15,9 @@
             height: 200px;
         }
     }
+    &.invisible{
+        height: 0;
+        opacity: 0;
+        border: 0;
+    }
 }

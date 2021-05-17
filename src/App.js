@@ -56,6 +56,7 @@ function App() {
       '5': deck.slice(28, 29),
       '6': deck.slice(31, 32),
       '7': deck.slice(32, 33)
+
     }
     )
 
@@ -74,15 +75,16 @@ function App() {
       setColDrop(col)
     }
   }
-
+  console.log('colDrop', colDrop.length)
 
 
   //column change
   useEffect(() => {
-    const finalcol = colDrop.substring(4, 5)
-    if (cardMove !== colDrop && colDrop.length > 0) {
+    const finalcol = colDrop.substring(4, 5);
+    if (opened[finalcol] && cardMove !== colDrop && colDrop.length > 0) {
       const initCol = cardMove.substring(4, 5)
-      const lastItem = opened[finalcol][opened[finalcol].length - 1];
+      console.log(colDrop)
+      let lastItem = opened[finalcol][opened[finalcol].length - 1];
 
       const differentFigure =
         (parseInt(lastItem.split('-')[1]) % 2 === 0 && !(parseInt(cardMove.split('-')[3]) % 2 === 0))
@@ -90,7 +92,8 @@ function App() {
         (!(parseInt(lastItem.split('-')[1]) % 2 === 0) && parseInt(cardMove.split('-')[3]) % 2 === 0);
 
       const cardSequence = parseInt(lastItem.split('-')[0]) - 1 === parseInt(cardMove.split('-')[2]);
-      if (differentFigure && cardSequence) {
+
+      if ((differentFigure && cardSequence) || parseInt(lastItem.split('-')[0]) === 14 && cardMove.indexOf('13')) {
         let losingCol = [];
         const indexOfCard = cardMove.indexOf('hand') > -1 ? (hand).indexOf(cardMove.split('card-')[1]) : (opened[initCol]).indexOf(cardMove.split('card-')[1]);
         let gainingCol = [...opened[finalcol]];
@@ -115,9 +118,11 @@ function App() {
         }
 
       }
+
       setCardMove('')
       setColDrop('')
     }
+
   }, [cardMove, colDrop])
 
   //open card refill
@@ -128,6 +133,9 @@ function App() {
         const newOpened = closed[item].filter((itm, index) => index === closed[item].length - 1);
         setClosed({ ...closed, [item]: newClosed })
         setOpened({ ...opened, [item]: newOpened })
+      }
+      if (opened[item].length === 0 && (closed[item] === undefined || closed[item].length === 0)) {
+        setOpened({ ...opened, [item]: [`14-0`] })
       }
     })
   }, [opened, closed])

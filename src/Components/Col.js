@@ -15,10 +15,11 @@ function Col({ closed, opened, id, handleColMove }) {
     function drop(ev) {
         ev.preventDefault();
         handleColMove({ col: ev.target.id })
+
     }
 
     return (
-        <div id={id} draggable={true} onDrop={drop} onDragOver={allowDrop}>
+        <div id={id} draggable={true} onDrop={drop} onDragOver={allowDrop} className='col'>
             {closed && closed.map((item, index) => {
                 return (<Card key={index} cardValue={item} hidden={true} draggable={false} />)
             })}
