@@ -1,7 +1,7 @@
 import React from 'react'
 import '../Sass/Card.scss'
 
-function Card({ cardValue, hidden, parentId, cardDragged, indexHand, openCut, final, setFinal }) {
+function Card({ cardValue, hidden, parentId, cardDragged, indexHand, openCut, setFinal }) {
 
     function drag(ev) {
         cardDragged(ev.target.childNodes[0].id)
@@ -41,16 +41,7 @@ function Card({ cardValue, hidden, parentId, cardDragged, indexHand, openCut, fi
     }
 
     function handleDoubleClick({ target }) {
-        const index = parseInt(target.id.split('-')[3] === '1' ? target.id.split('-')[3] : target.id.split('-')[3] - 1);
-        // const index = parseInt(target.id.split('-')[3] - 1);
-
-        // console.log(target.id.split('-')[3])
-        // const respectiveFinal = final[index];
         setFinal(cardValue, parentId, target.id.split('-')[3])
-
-        // if (parseInt(target.id.split('-')[2]) - 1 === respectiveFinal.length) {
-        //     setFinal(cardValue, parentId, target.id.split('-')[3])
-        // }
     }
 
     return (
@@ -58,7 +49,7 @@ function Card({ cardValue, hidden, parentId, cardDragged, indexHand, openCut, fi
             style={{ margin: `${indexHand}px 0 0 ${indexHand}px` }}
             draggable={!hidden}
             onDragStart={parentId !== 'hand' ? drag : handDrag}
-            className={`card ${hidden && `cut hidden`} ${openCut && `cut`} ${formatValue(cardValue) == '14' && 'invisible'}`}>
+            className={`card ${hidden && `cut hidden`} ${openCut && `cut`} ${formatValue(cardValue) == '14' && 'invisible'} ${formatValue(cardValue) === 'none' && `last`} `}>
             {
                 hidden ?
                     <div>

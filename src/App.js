@@ -21,6 +21,9 @@ function App() {
 
   const [final, setFinal] = useState({});
 
+
+  console.log(closed, opened, hand)
+
   useEffect(() => {
     shuffleFunc();
   }, [])
@@ -40,20 +43,20 @@ function App() {
     // setShuffle(deck);
     setClosed({
       '1': deck.slice(0, 6),
-      '2': deck.slice(8, 13),
-      '3': deck.slice(15, 19),
-      '4': deck.slice(21, 24),
-      '5': deck.slice(26, 28),
-      '6': deck.slice(30, 31),
+      '2': deck.slice(7, 12),
+      '3': deck.slice(13, 17),
+      '4': deck.slice(18, 21),
+      '5': deck.slice(22, 24),
+      '6': deck.slice(25, 26),
     })
     setOpened({
       '1': deck.slice(6, 7),
-      '2': deck.slice(13, 14),
-      '3': deck.slice(19, 20),
-      '4': deck.slice(24, 25),
-      '5': deck.slice(28, 29),
-      '6': deck.slice(31, 32),
-      '7': deck.slice(32, 33)
+      '2': deck.slice(12, 13),
+      '3': deck.slice(17, 18),
+      '4': deck.slice(21, 22),
+      '5': deck.slice(24, 25),
+      '6': deck.slice(26, 27),
+      '7': deck.slice(27, 28)
 
     }
     )
@@ -68,7 +71,7 @@ function App() {
 
 
 
-    setHand(deck.slice(33, 52));
+    setHand(deck.slice(28, 52));
     setFinal({
 
       '1': [],
@@ -154,14 +157,25 @@ function App() {
   }, [opened, closed])
 
   function handleSetFinal(card, col, fnl) {
-    // console.log(card, col, final, final[fnl])
-    const newOpened = opened[col].filter(item => item !== card);
-    const newFinal = final[fnl];
-    console.log(fnl)
-    newFinal.push(card)
-    setOpened({ ...opened, [col]: newOpened })
-    setFinal({ ...final, [fnl]: newFinal })
+    // console.log(card, col, final[fnl])
+    if (final[fnl].length + 1 === parseInt(card.split('-')[0])) {
+      if (col !== 'hand') {
+        const newOpened = opened[col].filter(item => item !== card);
+        setOpened({ ...opened, [col]: newOpened })
+      }
+      else {
+        console.log(card, col, fnl)
+        const newHand = hand.filter(item => item !== card);
+        setHand(newHand)
+      }
+      const newFinal = final[fnl];
+      newFinal.push(card)
+
+      setFinal({ ...final, [fnl]: newFinal })
+    }
+
   }
+
 
   return (
     <div className="App">

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Card from './Card'
 import '../Sass/Hand.scss'
 
-function Hand({ hand, handleHandMove }) {
+function Hand({ hand, handleHandMove, final, setFinal }) {
     const [counter, setCounter] = useState(-1);
 
     function handleCardDragged(cardInfo) {
@@ -35,15 +35,17 @@ function Hand({ hand, handleHandMove }) {
             <div className='cardBox'>
                 <div onClick={handleClick} className='closedBox'>
                     {hand.map((item, index) => {
-                        return (index >= counter &&
+                        return (index >= counter + 1 ?
                             <Card parentId={'hand'} key={index} cardValue={item} hidden={true} indexHand={index !== 0 && index - counter} />
+                            :
+                            <Card parentId={'hand'} cardValue={'none'} hidden={true} />
                         )
                     })}
                 </div>
                 <div className='openedBox' onDrop={drop} onDragOver={allowDrop}>
                     {hand.map((item, index) => {
                         return (index <= counter &&
-                            <Card parentId={'hand'} key={index} cardValue={item} indexHand={index} cardDragged={handleCardDragged} />
+                            <Card parentId={'hand'} key={index} cardValue={item} indexHand={index} cardDragged={handleCardDragged} final={final} setFinal={setFinal} />
                         )
                     })}
                 </div>

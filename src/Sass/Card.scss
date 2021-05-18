@@ -3,10 +3,12 @@
     height: 200px;
     background: #fff;
     border:1px solid;
+    cursor: pointer;
     &.cut{
         height: 30px;
     }
     &.hidden{
+        cursor: initial ;
         background: black;
         border:1px solid grey;
     }
@@ -23,5 +25,10 @@
     .finalcols &{
     width: 75px;
     height: 100px;
+    }
+    &.last{
+        background-color: #f1f1f1;
+        border: none;
+        font-size: 0;
     }
 }
