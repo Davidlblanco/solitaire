@@ -3,6 +3,7 @@ import Col from './Components/Col';
 import './Sass/App.scss'
 import Hand from './Components/Hand';
 import FinalCol from './Components/FinalCol';
+import UseDebounce from './Utils/UseDebounce'
 
 function App() {
   let deck = [
@@ -11,7 +12,6 @@ function App() {
     '1-3', '2-3', '3-3', '4-3', '5-3', '6-3', '7-3', '8-3', '9-3', '10-3', '11-3', '12-3', '13-3',
     '1-4', '2-4', '3-4', '4-4', '5-4', '6-4', '7-4', '8-4', '9-4', '10-4', '11-4', '12-4', '13-4'
   ]
-  // const [shuffle, setShuffle] = useState([]);
 
   const [closed, setClosed] = useState({});
 
@@ -21,26 +21,36 @@ function App() {
 
   const [final, setFinal] = useState({});
 
-
-  console.log(closed, opened, hand)
-
   useEffect(() => {
-    shuffleFunc();
+    const savedData = JSON.parse(localStorage.solitaire);
+    setClosed(savedData.closed)
+    setOpened(savedData.opened)
+    setHand(savedData.hand)
+    setFinal(savedData.final)
   }, [])
 
+  function changeLocalStorage() {
+    let newLocalStor = { 'closed': closed, 'opened': opened, 'hand': hand, 'final': final };
+    localStorage.setItem('solitaire', JSON.stringify(newLocalStor));
+    // console.log(JSON.parse(localStorage.solitaire));
+  }
+
+  //set Localstorage
+  const debounceChange = UseDebounce(changeLocalStorage, 1000)
+  useEffect(() => {
+    debounceChange()
+  }, [closed, opened, hand, final])
+
+  //shuffle
   function shuffleFunc() {
     var currentIndex = deck.length, temporaryValue, randomIndex;
-    // While there remain elements to shuffle...
     while (0 !== currentIndex) {
-      // Pick a remaining element...
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex -= 1;
-      // And swap it with the current element.
       temporaryValue = deck[currentIndex];
       deck[currentIndex] = deck[randomIndex];
       deck[randomIndex] = temporaryValue;
     }
-    // setShuffle(deck);
     setClosed({
       '1': deck.slice(0, 6),
       '2': deck.slice(7, 12),
@@ -60,28 +70,14 @@ function App() {
 
     }
     )
-
-    //finalcol tester
-    // const arr1 = ['1-1'];
-    // const arr2 = ['1-2'];
-    // const arr3 = ['1-3'];
-    // const arr4 = ['1-4'];
-    // setOpened({ ...opened, '1': arr1, '2': arr2, '3': arr3, '4': arr4, })
-
-
-
-
     setHand(deck.slice(28, 52));
     setFinal({
-
       '1': [],
       '2': [],
       '3': [],
       '4': [],
     })
   }
-
-
   const [cardMove, setCardMove] = useState('')
   const [colDrop, setColDrop] = useState('')
 
@@ -94,22 +90,24 @@ function App() {
     }
   }
 
-
   //column change
   useEffect(() => {
     const finalcol = colDrop.substring(4, 5);
     if (opened[finalcol] && cardMove !== colDrop && colDrop.length > 0) {
       const initCol = cardMove.substring(4, 5)
-      // console.log(colDrop)
       const lastItem = opened[finalcol][opened[finalcol].length - 1];
       const differentFigure =
         (parseInt(lastItem.split('-')[1]) % 2 === 0 && !(parseInt(cardMove.split('-')[3]) % 2 === 0))
         ||
-        (!(parseInt(lastItem.split('-')[1]) % 2 === 0) && parseInt(cardMove.split('-')[3]) % 2 === 0);
+        (!(parseInt(lastItem.split('-')[1]) % 2 === 0) && parseInt(cardMove.split('-')[3]) % 2 === 0)
+        || (parseInt(lastItem.split('-')[1]) === 0)
+        ;
+
+      // console.log('last item', lastItem, cardMove)
 
       const cardSequence = parseInt(lastItem.split('-')[0]) - 1 === parseInt(cardMove.split('-')[2]);
 
-      if ((differentFigure && cardSequence) || parseInt(lastItem.split('-')[0]) === 14 && cardMove.indexOf('13')) {
+      if ((differentFigure && cardSequence)) {
         let losingCol = [];
         const indexOfCard = cardMove.indexOf('hand') > -1 ? (hand).indexOf(cardMove.split('card-')[1]) : (opened[initCol]).indexOf(cardMove.split('card-')[1]);
         let gainingCol = [...opened[finalcol]];
@@ -156,8 +154,8 @@ function App() {
     })
   }, [opened, closed])
 
+  //final cols
   function handleSetFinal(card, col, fnl) {
-    // console.log(card, col, final[fnl])
     if (final[fnl].length + 1 === parseInt(card.split('-')[0])) {
       if (col !== 'hand') {
         const newOpened = opened[col].filter(item => item !== card);
@@ -173,18 +171,15 @@ function App() {
 
       setFinal({ ...final, [fnl]: newFinal })
     }
-
   }
 
 
   return (
-    <div className="App">
+    <div className="App" >
       <header>
         <div>solitaire
-      <button onClick={() => shuffleFunc()}>Shuffle</button></div>
-
-
-
+          {/* <button onClick={(e) => handleUndo(e)}>Undo</button> */}
+          <button onClick={() => shuffleFunc()}>Shuffle</button></div>
         <div className='finalcols'>
           {Object.keys(final).map((item, index) => <FinalCol key={item} final={final[index + 1]} />)}
         </div>

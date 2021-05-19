@@ -38,7 +38,7 @@ function Hand({ hand, handleHandMove, final, setFinal }) {
                         return (index >= counter + 1 ?
                             <Card parentId={'hand'} key={index} cardValue={item} hidden={true} indexHand={index !== 0 && index - counter} />
                             :
-                            <Card parentId={'hand'} cardValue={'none'} hidden={true} />
+                            <Card parentId={'hand'} key={index} cardValue={'none'} hidden={true} />
                         )
                     })}
                 </div>

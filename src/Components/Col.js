@@ -25,7 +25,16 @@ function Col({ closed, opened, id, handleColMove, final, setFinal }) {
             })}
             {opened &&
                 opened.map((item, index) => {
-                    return (<Card parentId={id} key={index} id={item} cardValue={item} hidden={false} cardDragged={handleCardDragged} openCut={opened.length - 1 !== index} final={final} setFinal={setFinal} />)
+                    return (<Card
+                        parentId={id}
+                        key={index}
+                        id={item}
+                        cardValue={item}
+                        hidden={false}
+                        cardDragged={handleCardDragged}
+                        openCut={opened.length - 1 !== index}
+                        final={final} setFinal={setFinal}
+                        openedLength={opened.length} />)
                 })
             }
         </div>
