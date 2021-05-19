@@ -2,13 +2,12 @@
     border:1px solid darken($color1,1%);
     display: flex;
     justify-content: flex-end;
-    width: 302px;
+    width: 312px;
+    height: 100px;
     pointer-events: none;
     background: darken($color1,1%);
     border-radius: 3px;
-    div{
-        
-    }
+   
     .card{
      border-radius: 3px;       
     }
