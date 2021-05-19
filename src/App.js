@@ -22,11 +22,14 @@ function App() {
   const [final, setFinal] = useState({});
 
   useEffect(() => {
-    const savedData = JSON.parse(localStorage.solitaire);
-    setClosed(savedData.closed)
-    setOpened(savedData.opened)
-    setHand(savedData.hand)
-    setFinal(savedData.final)
+    if (localStorage.solitaire) {
+
+      const savedData = JSON.parse(localStorage.solitaire);
+      setClosed(savedData.closed)
+      setOpened(savedData.opened)
+      setHand(savedData.hand)
+      setFinal(savedData.final)
+    }
   }, [])
 
   function changeLocalStorage() {
@@ -162,7 +165,6 @@ function App() {
         setOpened({ ...opened, [col]: newOpened })
       }
       else {
-        console.log(card, col, fnl)
         const newHand = hand.filter(item => item !== card);
         setHand(newHand)
       }
