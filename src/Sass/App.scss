@@ -1,8 +1,19 @@
+body{
+    background: $color1;
+    background-image: url('../Assets/pattern.png');
+    background-size: 500px 800px;
+    background-position:bottom right; 
+    background-repeat: no-repeat;
+    height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+}
 *{
     margin: 0;
     box-sizing: border-box;
 }
 .App{
+    max-width: 1100px;
+    margin: 0 auto;
     .gameContainer{
         display: grid;
         grid-template-columns: repeat(7, 1fr);
@@ -17,13 +28,25 @@
         width: 100%;
         display: flex;
         justify-content: space-between;
+        align-items: center;
         min-height: 100px;
-    }
-    .finalcols{
-        border:1px solid;
-        display: flex;
-        justify-content: flex-end;
-        width: 302px;
-        pointer-events: none;
+        margin: 20px 0;
+        .center{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 250px;
+            .logo{
+                width: 100%;
+            }
+        }
+        button{
+            background: $color1;
+            border: none;
+            border-radius: 3px;
+            color:$color4;
+            font-weight: 200;
+            font-size: 12px;
+        }
     }
 }

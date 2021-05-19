@@ -1,5 +1,5 @@
 import React from 'react'
-import '../Sass/Card.scss'
+// import '../Sass/Card.scss'
 
 function Card({ cardValue, hidden, parentId, cardDragged, indexHand, openCut, setFinal, openedLength }) {
 
@@ -55,7 +55,7 @@ function Card({ cardValue, hidden, parentId, cardDragged, indexHand, openCut, se
             ${openCut ? `cut` : ``} 
             ${formatValue(cardValue) == '14' ? 'invisible' : ``} 
             ${formatValue(cardValue) === 'none' ? `last ` : ``} 
-            ${openedLength === 1 ? `unique` : ``}
+            ${openedLength === 1 ? `unique` : ` `} ${'fig' + cardValue.split('-')[1]}
             `
 
             }
@@ -64,7 +64,7 @@ function Card({ cardValue, hidden, parentId, cardDragged, indexHand, openCut, se
             {
                 hidden ?
                     <div>
-                        {formatValue(cardValue) + ' hidden'}
+                        {/* {formatValue(cardValue) + ' hidden'} */}
                         {/* <span>{figure[cardValue.split('-')[1]]}</span> */}
                     </div>
                     :
@@ -73,7 +73,8 @@ function Card({ cardValue, hidden, parentId, cardDragged, indexHand, openCut, se
                         id={`col-${parentId}_card-${cardValue}`}
                         style={{ display: 'block', height: '150px' }}>
                         {formatValue(cardValue)}
-                        <span>{figure[cardValue.split('-')[1]]}</span>
+                        <span> {figure[cardValue.split('-')[1]]}</span>
+                        <span className='figCenter'> {figure[cardValue.split('-')[1]]}</span>
                     </div>
             }
         </div>

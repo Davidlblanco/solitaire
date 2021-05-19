@@ -1,3 +1,10 @@
 .col{
-    
+    display: block;
+    .card{
+        border-radius: .2rem;
+        margin-top: -3px;
+        &.hidden,&.cut{
+            border-radius: .2rem .2rem 0 0 ;
+        }
+    }
 }

@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import Col from './Components/Col';
-import './Sass/App.scss'
+import './Sass/All.scss'
+import Logo from './Assets/logo.png'
 import Hand from './Components/Hand';
 import FinalCol from './Components/FinalCol';
 import UseDebounce from './Utils/UseDebounce'
+
 
 function App() {
   let deck = [
@@ -179,9 +181,12 @@ function App() {
   return (
     <div className="App" >
       <header>
-        <div>solitaire
-          {/* <button onClick={(e) => handleUndo(e)}>Undo</button> */}
-          <button onClick={() => shuffleFunc()}>Shuffle</button></div>
+        <Hand hand={hand} handleHandMove={handleColMove} final={final} setFinal={handleSetFinal} />
+
+        <div className='center'>
+          <img className='logo' src={Logo}></img>
+          <button onClick={() => shuffleFunc()}>Shuffle | Start</button>
+        </div>
         <div className='finalcols'>
           {Object.keys(final).map((item, index) => <FinalCol key={item} final={final[index + 1]} />)}
         </div>
@@ -193,7 +198,6 @@ function App() {
           )
         })}
       </div>
-      <Hand hand={hand} handleHandMove={handleColMove} final={final} setFinal={handleSetFinal} />
     </div >
   );
 }

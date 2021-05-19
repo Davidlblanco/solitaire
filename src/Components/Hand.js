@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Card from './Card'
-import '../Sass/Hand.scss'
+// import '../Sass/Hand.scss'
 
 function Hand({ hand, handleHandMove, final, setFinal }) {
     const [counter, setCounter] = useState(-1);
