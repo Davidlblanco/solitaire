@@ -99,6 +99,7 @@ function App() {
       '3': [],
       '4': [],
     })
+    setWin(false)
   }
   const [cardMove, setCardMove] = useState('')
   const [colDrop, setColDrop] = useState('')
@@ -178,6 +179,9 @@ function App() {
 
   //final cols
   function handleSetFinal(card, col, fnl) {
+    if (col !== 'hand' && opened[col][opened[col].length - 1] !== card) {
+      return
+    }
     if (final[fnl].length + 1 === parseInt(card.split('-')[0])) {
       if (col !== 'hand') {
         const newOpened = opened[col].filter(item => item !== card);
