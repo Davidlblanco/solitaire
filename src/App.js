@@ -5,6 +5,7 @@ import Logo from './Assets/logo.png'
 import Hand from './Components/Hand';
 import FinalCol from './Components/FinalCol';
 import UseDebounce from './Utils/UseDebounce'
+import FireWorks from './Components/FireWorks';
 
 
 function App() {
@@ -14,7 +15,6 @@ function App() {
     '1-3', '2-3', '3-3', '4-3', '5-3', '6-3', '7-3', '8-3', '9-3', '10-3', '11-3', '12-3', '13-3',
     '1-4', '2-4', '3-4', '4-4', '5-4', '6-4', '7-4', '8-4', '9-4', '10-4', '11-4', '12-4', '13-4'
   ]
-
   const [closed, setClosed] = useState({});
 
   const [opened, setOpened] = useState({});
@@ -23,14 +23,31 @@ function App() {
 
   const [final, setFinal] = useState({});
 
+  const [win, setWin] = useState(false);
+
+
+  useEffect(() => {
+    if (final['1']) {
+      var count = final['1'].length + final['2'].length + final['3'].length + final['4'].length;
+      if (count === 52)
+        setWin(true)
+    }
+  }, [final])
+
   useEffect(() => {
     if (localStorage.solitaire) {
-
       const savedData = JSON.parse(localStorage.solitaire);
       setClosed(savedData.closed)
       setOpened(savedData.opened)
       setHand(savedData.hand)
       setFinal(savedData.final)
+    }
+    else if (hand.length === 0 && opened === {}) {
+      shuffleFunc()
+
+    }
+    else {
+      shuffleFunc()
     }
   }, [])
 
@@ -198,6 +215,9 @@ function App() {
           )
         })}
       </div>
+      {win &&
+        <FireWorks />}
+
     </div >
   );
 }
