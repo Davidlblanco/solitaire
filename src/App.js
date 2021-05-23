@@ -25,7 +25,7 @@ function App() {
 
   const [win, setWin] = useState(false);
 
-
+  console.log(final)
   useEffect(() => {
     if (final['1']) {
       var count = final['1'].length + final['2'].length + final['3'].length + final['4'].length;
@@ -201,6 +201,10 @@ function App() {
 
   return (
     <div className="App" >
+      <div className='center'>
+        <img className='logo' src={Logo}></img>
+        <button onClick={() => shuffleFunc()}>Shuffle | Start</button>
+      </div>
       <header>
         <Hand hand={hand} handleHandMove={handleColMove} final={final} setFinal={handleSetFinal} />
 

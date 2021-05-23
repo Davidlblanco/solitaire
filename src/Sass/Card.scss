@@ -1,12 +1,13 @@
-.card{
-    width: 150px;
-    height: 200px;
+.card{  
+    width: 40px;
+    height: 55px;  
     background: $color3;
     border:3px solid #fff;
     box-shadow: 0 0 0 1px darken($color1, 5%);
     cursor: pointer;
     padding: 3px 5px;
     position: relative;
+   
     &.fig1,&.fig3{
         color: $color6;
     }
@@ -39,10 +40,6 @@
             pointer-events: none;
         }
     }
-    .finalcols &{
-    width: 75px;
-    height: 100px;
-    }
     &.last{
         background-color: darken($color1, 5%);
         background-image: none;
@@ -50,9 +47,9 @@
         font-size: 0;
     }
     .figCenter{
-        font-size: 70px;
+        font-size: 40px;
         position: absolute;
-        top:50%;
+        top:70%;
         left: 50%;
         transform: translate(-50%,-50%);
         pointer-events: none;
@@ -62,4 +59,23 @@
             transform: translate(-50%,-55%);
         }
     }
+    span:not(.figCenter){
+        display: none;
+    }
+    @media (min-width:580px) {
+        .figCenter{
+            font-size: 70px;
+            top:50%;
+        }
+        span:not(.figCenter){
+            display: initial;
+        }
+        width: 75px;
+        height: 100px;        
+    }
+    @media (min-width:1100px) {
+        width: 150px;
+        height: 200px;        
+    }
+  
 }

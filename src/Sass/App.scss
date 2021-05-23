@@ -12,13 +12,13 @@ body{
     box-sizing: border-box;
 }
 .App{
-    max-width: 1100px;
+    max-width: 320px;
     margin: 0 auto;
     .gameContainer{
         display: grid;
         grid-template-columns: repeat(7, 1fr);
         grid-template-rows: 1fr;
-        grid-column-gap: 0px;
+        grid-column-gap: 5px;
         grid-row-gap: 0px;
     }
     .d-none{
@@ -30,16 +30,21 @@ body{
         justify-content: space-between;
         align-items: center;
         min-height: 100px;
-        margin: 20px 0;
+        margin: 0px 0 20px;
         .center{
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            width: 250px;
-            .logo{
-                width: 100%;
-                height: 59px;
-            }
+            display: none;
+        }
+       
+    }
+    .center{
+                display: flex;        
+                flex-wrap: wrap;
+                width: 250px;
+                margin: 0 auto;
+                justify-content: center;
+        .logo{
+            width: 100%;
+            height: auto;
         }
         button{
             background: $color1;
@@ -48,6 +53,23 @@ body{
             color:$color4;
             font-weight: 200;
             font-size: 12px;
+        }
+    }
+    
+    @media (min-width:580px) {
+        max-width: 580px;       
+    }
+    @media (min-width:1100px) {
+        max-width: 1100px; 
+        .center{
+            display: none;
+        }
+        header{
+            margin: 10px 0 20px;
+            .center{
+                display: flex;
+                width: 250px;
+            }
         }
     }
 }
