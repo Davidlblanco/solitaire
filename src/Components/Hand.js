@@ -17,6 +17,7 @@ function Hand({ hand, handleHandMove, final, setFinal }) {
             setCounter(- 1)
         }
     }
+
     function allowDrop(ev) {
         ev.preventDefault();
     }
@@ -30,6 +31,7 @@ function Hand({ hand, handleHandMove, final, setFinal }) {
         if (counter > 1)
             setCounter(counter - 1)
     }, [hand]);
+
     return (
         <div>
             <div className='cardBox'>

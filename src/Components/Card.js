@@ -6,6 +6,7 @@ function Card({ cardValue, hidden, parentId, cardDragged, indexHand, openCut, se
     function drag(ev) {
         cardDragged(ev.target.childNodes[0].id)
     }
+
     function handDrag(ev) {
         cardDragged(ev.target.childNodes[0].id)
     }
@@ -16,6 +17,7 @@ function Card({ cardValue, hidden, parentId, cardDragged, indexHand, openCut, se
         3: '♦️',
         4: '♣️',
     }
+
     function formatValue(val) {
         let split = val.split('-')
         switch (split[0]) {
@@ -59,13 +61,10 @@ function Card({ cardValue, hidden, parentId, cardDragged, indexHand, openCut, se
             `
 
             }
-
         >
             {
                 hidden ?
                     <div>
-                        {/* {formatValue(cardValue) + ' hidden'} */}
-                        {/* <span>{figure[cardValue.split('-')[1]]}</span> */}
                     </div>
                     :
                     <div

@@ -7,7 +7,6 @@
     cursor: pointer;
     padding: 3px 5px;
     position: relative;
-   
     &.fig1,&.fig3{
         color: $color6;
     }
@@ -15,7 +14,7 @@
         border-bottom: 0;
         height: 30px;
         .figCenter{
-        display: none;
+            display: none;
         }
     }
     &.hidden{
@@ -29,7 +28,6 @@
     .cardBox &{
         &.cut{
             height: 200px;
-            
         }
     }
     &.invisible{
@@ -63,15 +61,15 @@
         display: none;
     }
     @media (min-width:580px) {
+        width: 75px;
+        height: 100px;   
         .figCenter{
             font-size: 70px;
             top:50%;
         }
         span:not(.figCenter){
             display: initial;
-        }
-        width: 75px;
-        height: 100px;        
+        }     
     }
     @media (min-width:1100px) {
         width: 150px;

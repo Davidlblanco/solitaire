@@ -11,7 +11,6 @@ function FireWorks() {
             <div className='pulse'>
                 <img src={win} alt='win image' />
                 <h1>You Win!</h1>
-
             </div>
         </div>
     )

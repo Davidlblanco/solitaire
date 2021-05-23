@@ -25,7 +25,7 @@ function App() {
 
   const [win, setWin] = useState(false);
 
-  console.log(final)
+  //winning surprise
   useEffect(() => {
     if (final['1']) {
       var count = final['1'].length + final['2'].length + final['3'].length + final['4'].length;
@@ -34,6 +34,7 @@ function App() {
     }
   }, [final])
 
+  //use localstorage if possible / shuffle
   useEffect(() => {
     if (localStorage.solitaire) {
       const savedData = JSON.parse(localStorage.solitaire);
@@ -44,21 +45,20 @@ function App() {
     }
     else if (hand.length === 0 && opened === {}) {
       shuffleFunc()
-
     }
     else {
       shuffleFunc()
     }
   }, [])
 
+  //set localstorage
   function changeLocalStorage() {
     let newLocalStor = { 'closed': closed, 'opened': opened, 'hand': hand, 'final': final };
     localStorage.setItem('solitaire', JSON.stringify(newLocalStor));
-    // console.log(JSON.parse(localStorage.solitaire));
   }
 
-  //set Localstorage
   const debounceChange = UseDebounce(changeLocalStorage, 1000)
+
   useEffect(() => {
     debounceChange()
   }, [closed, opened, hand, final])
@@ -123,10 +123,7 @@ function App() {
         (parseInt(lastItem.split('-')[1]) % 2 === 0 && !(parseInt(cardMove.split('-')[3]) % 2 === 0))
         ||
         (!(parseInt(lastItem.split('-')[1]) % 2 === 0) && parseInt(cardMove.split('-')[3]) % 2 === 0)
-        || (parseInt(lastItem.split('-')[1]) === 0)
-        ;
-
-      // console.log('last item', lastItem, cardMove)
+        || (parseInt(lastItem.split('-')[1]) === 0);
 
       const cardSequence = parseInt(lastItem.split('-')[0]) - 1 === parseInt(cardMove.split('-')[2]);
 
@@ -162,7 +159,7 @@ function App() {
 
   }, [cardMove, colDrop])
 
-  //open card refill
+  //open card refill (closed to opened)
   useEffect(() => {
     Object.keys(opened).forEach((item, index) => {
       if (item < 7 && opened[item].length === 0 && closed[item].length > 0) {
@@ -198,7 +195,6 @@ function App() {
     }
   }
 
-
   return (
     <div className="App" >
       <div className='center'>
@@ -225,7 +221,6 @@ function App() {
       </div>
       {win &&
         <FireWorks />}
-
     </div >
   );
 }
