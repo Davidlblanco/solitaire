@@ -25,6 +25,21 @@ function App() {
 
   const [win, setWin] = useState(false);
 
+  const [totalCounter, setTotalCounter] = useState(0);
+
+  //playcounter
+  const setCounter = UseDebounce(setCount, 500)
+  function setCount() {
+    let counter = totalCounter + 1;
+    setTotalCounter(counter)
+    localStorage.setItem('counter', JSON.stringify(totalCounter));
+  }
+
+  useEffect(() => {
+    setCounter();
+  }, [closed, opened, hand, final]);
+
+
   //winning surprise
   useEffect(() => {
     if (final['1']) {
@@ -36,18 +51,20 @@ function App() {
 
   //use localstorage if possible / shuffle
   useEffect(() => {
-    if (localStorage.solitaire) {
-      const savedData = JSON.parse(localStorage.solitaire);
+    const savedData = JSON.parse(localStorage.solitaire);
+    if (localStorage.solitaire && savedData.hand.length > 0) {
       setClosed(savedData.closed)
       setOpened(savedData.opened)
       setHand(savedData.hand)
       setFinal(savedData.final)
     }
-    else if (hand.length === 0 && opened === {}) {
-      shuffleFunc()
-    }
     else {
       shuffleFunc()
+    }
+    //set counter
+    const counter = JSON.parse(localStorage.counter);
+    if (localStorage.counter && counter != "0") {
+      setTotalCounter(counter)
     }
   }, [])
 
@@ -100,6 +117,8 @@ function App() {
       '4': [],
     })
     setWin(false)
+    setTotalCounter(-1)
+    localStorage.setItem('counter', JSON.stringify("-1"));
   }
   const [cardMove, setCardMove] = useState('')
   const [colDrop, setColDrop] = useState('')
@@ -221,6 +240,7 @@ function App() {
       </div>
       {win &&
         <FireWorks />}
+      <div className='counter'>{totalCounter > -1 ? totalCounter : '0'}</div>
     </div >
   );
 }
