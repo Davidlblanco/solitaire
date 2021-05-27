@@ -15,6 +15,8 @@ function App() {
     '1-3', '2-3', '3-3', '4-3', '5-3', '6-3', '7-3', '8-3', '9-3', '10-3', '11-3', '12-3', '13-3',
     '1-4', '2-4', '3-4', '4-4', '5-4', '6-4', '7-4', '8-4', '9-4', '10-4', '11-4', '12-4', '13-4'
   ]
+  const [shuffle, setShuffle] = useState(false)
+
   const [closed, setClosed] = useState({});
 
   const [opened, setOpened] = useState({});
@@ -27,18 +29,33 @@ function App() {
 
   const [totalCounter, setTotalCounter] = useState(0);
 
-  //playcounter
-  const setCounter = UseDebounce(setCount, 500)
-  function setCount() {
-    let counter = totalCounter + 1;
-    setTotalCounter(counter)
-    localStorage.setItem('counter', JSON.stringify(totalCounter));
+  //localstorage first set
+  if (localStorage.solitaire === undefined) {
+    localStorage.setItem('counter', JSON.stringify("0"));
+    changeLocalStorage()
   }
 
+  //localstorage set on reload
   useEffect(() => {
-    setCounter();
-  }, [closed, opened, hand, final]);
+    const savedData = JSON.parse(localStorage.solitaire);
+    const undf = closed['1'] === undefined && opened['1'] === undefined && hand.length === 0 && final['1'] === undefined;
+    if (localStorage.solitaire && undf) {
+      setClosed(savedData.closed)
+      setOpened(savedData.opened)
+      setHand(savedData.hand)
+      setFinal(savedData.final)
+    } else {
+      setShuffle(true)
+    }
+    if (savedData.hand.length === 0 && totalCounter === 0) {
+      setShuffle(true)
 
+    }
+    const counter = JSON.parse(localStorage.counter);
+    if (localStorage.counter && counter != "0") {
+      setTotalCounter(counter)
+    }
+  }, [])
 
   //winning surprise
   useEffect(() => {
@@ -49,77 +66,73 @@ function App() {
     }
   }, [final])
 
-  //use localstorage if possible / shuffle
-  useEffect(() => {
-    const savedData = JSON.parse(localStorage.solitaire);
-    if (localStorage.solitaire && savedData.hand.length > 0) {
-      setClosed(savedData.closed)
-      setOpened(savedData.opened)
-      setHand(savedData.hand)
-      setFinal(savedData.final)
-    }
-    else {
-      shuffleFunc()
-    }
-    //set counter
-    const counter = JSON.parse(localStorage.counter);
-    if (localStorage.counter && counter != "0") {
-      setTotalCounter(counter)
-    }
-  }, [])
+  //playcounter
+  const setCounter = UseDebounce(setCount, 500)
+  function setCount() {
+    let counter = totalCounter + 1;
+    setTotalCounter(counter)
+    localStorage.setItem('counter', JSON.stringify(totalCounter));
+  }
 
   //set localstorage
   function changeLocalStorage() {
     let newLocalStor = { 'closed': closed, 'opened': opened, 'hand': hand, 'final': final };
     localStorage.setItem('solitaire', JSON.stringify(newLocalStor));
   }
-
-  const debounceChange = UseDebounce(changeLocalStorage, 1000)
-
+  const debounceChange = UseDebounce(changeLocalStorage, 500)
   useEffect(() => {
     debounceChange()
+    setCounter();
   }, [closed, opened, hand, final])
 
   //shuffle
-  function shuffleFunc() {
-    var currentIndex = deck.length, temporaryValue, randomIndex;
-    while (0 !== currentIndex) {
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex -= 1;
-      temporaryValue = deck[currentIndex];
-      deck[currentIndex] = deck[randomIndex];
-      deck[randomIndex] = temporaryValue;
-    }
-    setClosed({
-      '1': deck.slice(0, 6),
-      '2': deck.slice(7, 12),
-      '3': deck.slice(13, 17),
-      '4': deck.slice(18, 21),
-      '5': deck.slice(22, 24),
-      '6': deck.slice(25, 26),
-    })
-    setOpened({
-      '1': deck.slice(6, 7),
-      '2': deck.slice(12, 13),
-      '3': deck.slice(17, 18),
-      '4': deck.slice(21, 22),
-      '5': deck.slice(24, 25),
-      '6': deck.slice(26, 27),
-      '7': deck.slice(27, 28)
+  useEffect(() => {
+    if (shuffle) {
+      var currentIndex = deck.length, temporaryValue, randomIndex;
+      while (0 !== currentIndex) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+        temporaryValue = deck[currentIndex];
+        deck[currentIndex] = deck[randomIndex];
+        deck[randomIndex] = temporaryValue;
+      }
+      setClosed({
+        '1': deck.slice(0, 6),
+        '2': deck.slice(7, 12),
+        '3': deck.slice(13, 17),
+        '4': deck.slice(18, 21),
+        '5': deck.slice(22, 24),
+        '6': deck.slice(25, 26),
+      })
+      setOpened({
+        '1': deck.slice(6, 7),
+        '2': deck.slice(12, 13),
+        '3': deck.slice(17, 18),
+        '4': deck.slice(21, 22),
+        '5': deck.slice(24, 25),
+        '6': deck.slice(26, 27),
+        '7': deck.slice(27, 28)
 
+      }
+      )
+      setHand(deck.slice(28, 52));
+      setFinal({
+        '1': [],
+        '2': [],
+        '3': [],
+        '4': [],
+      })
+      setWin(false)
+      setTotalCounter(-1)
+      localStorage.setItem('counter', JSON.stringify("0"));
+      setShuffle(false)
+
+      let newLocalStor = { 'closed': closed, 'opened': opened, 'hand': hand, 'final': final };
+      localStorage.setItem('solitaire', JSON.stringify(newLocalStor));
     }
-    )
-    setHand(deck.slice(28, 52));
-    setFinal({
-      '1': [],
-      '2': [],
-      '3': [],
-      '4': [],
-    })
-    setWin(false)
-    setTotalCounter(-1)
-    localStorage.setItem('counter', JSON.stringify("-1"));
-  }
+  }, [shuffle])
+
+  //card move
   const [cardMove, setCardMove] = useState('')
   const [colDrop, setColDrop] = useState('')
 
@@ -218,14 +231,14 @@ function App() {
     <div className="App" >
       <div className='center'>
         <img className='logo' src={Logo}></img>
-        <button onClick={() => shuffleFunc()}>Shuffle | Start</button>
+        <button onClick={() => setShuffle(true)}>Shuffle | Start</button>
       </div>
       <header>
         <Hand hand={hand} handleHandMove={handleColMove} final={final} setFinal={handleSetFinal} />
 
         <div className='center'>
           <img className='logo' src={Logo}></img>
-          <button onClick={() => shuffleFunc()}>Shuffle | Start</button>
+          <button onClick={() => setShuffle(true)}>Shuffle | Start</button>
         </div>
         <div className='finalcols'>
           {Object.keys(final).map((item, index) => <FinalCol key={item} final={final[index + 1]} />)}
